@@ -2,10 +2,12 @@ export default function appSrc(express, bodyParser, createReadStream, crypto, ht
     const app = express();
 
     app
-        .use(cors())
-        .options('*', cors());
+        .use(function(req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,OPTIONS,DELETE");
+        next();
+      })
 
-    app
         .use('/login/', (req, res) => res.send('itmo307702'))
 
         .use('/test/', async(req, res) => {
