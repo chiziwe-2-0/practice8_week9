@@ -11,9 +11,14 @@ export default function appSrc(express, bodyParser, createReadStream, crypto, ht
 
         .use('/login/', (req, res) => res.send('itmo307702'))
 
-        .use('/test/', (req, res) => res.send('0.8862481722945399'))
-
-
+        .use('/test/', async(req, res) => {
+            const page = new Zombie();
+            await page.visit(req.query.URL);
+            await page.pressButton('#bt');
+            const result = await page.document.querySelector('#inp').value;
+            res.send(result);
+            console.log(result);
+        })
 
         .all('*', (req, res) => res.send('itmo307702'));
 
