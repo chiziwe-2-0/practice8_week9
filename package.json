@@ -1,0 +1,28 @@
+{
+  "name": "practice8_week9",
+  "version": "1.0.0",
+  "description": "Практическое задание 8 курса на OpenEdu",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chiziwe-2-0/practice8_week9.git"
+  },
+  "author": "Nikita Olimpiev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chiziwe-2-0/practice8_week9/issues"
+  },
+  "homepage": "https://github.com/chiziwe-2-0/practice8_week9#readme",
+
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "zombie": "^6.1.4"
+  }
+}
