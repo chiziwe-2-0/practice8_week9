@@ -8,14 +8,15 @@ export default function appSrc(express, bodyParser, createReadStream, crypto, ht
         next();
       })
 
+
         .use('/login/', (req, res) => res.send('itmo307702'))
 
         .use('/test/', async(req, res) => {
             const zmb = new Zombie();
-
             await zmb.visit(req.query.URL);
             await zmb.pressButton('#bt');
-            res.send(await zmb.document.querySelector('#inp').value)
+            const result = await zmb.document.querySelector('#inp').value;
+            res.send(result)
         })
 
         .all('*', (req, res) => res.send('itmo307702'));
