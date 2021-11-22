@@ -1,15 +1,9 @@
 import express from 'express';
-import bodyParser from 'body-parser';
-import {createReadStream} from 'fs';
-import crypto from 'crypto';
-import http from 'http';
-import cors from 'cors';
-import path from 'path';
-import Zombie from 'zombie';
+import zombie from 'zombie';
 
 import appSrc from './app.js';
 
-const app = appSrc(express, bodyParser, createReadStream, crypto, http, cors, path, Zombie);
+const app = appSrc(express, zombie);
 
 const port = process.env.PORT || 3000;
 

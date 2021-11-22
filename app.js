@@ -1,4 +1,4 @@
-export default function appSrc(express, bodyParser, createReadStream, crypto, http, mongodb, Zombie, cors, path) {
+export default function appSrc(express, zombie) {
     const app = express();
 
     app
@@ -12,7 +12,7 @@ export default function appSrc(express, bodyParser, createReadStream, crypto, ht
         .use('/login/', (req, res) => res.send('itmo307702'))
 
         .use('/test/', async(req, res) => {
-            const page = new Zombie();
+            const page = new zombie();
             await page.visit(req.query.URL);
             await page.pressButton('#bt');
             const result = await page.document.querySelector('#inp').value;
