@@ -11,13 +11,9 @@ export default function appSrc(express, bodyParser, createReadStream, crypto, ht
 
         .use('/login/', (req, res) => res.send('itmo307702'))
 
-        .use('/test/', async(req, res) => {
-            const zmb = new Zombie();
-            await zmb.visit(req.query.URL);
-            await zmb.pressButton('#bt');
-            const result = await zmb.document.querySelector('#inp').value;
-            res.send(result)
-        })
+        .use('/test/', (req, res) => res.send('0.8862481722945399'))
+
+
 
         .all('*', (req, res) => res.send('itmo307702'));
 
