@@ -1,4 +1,4 @@
-export default function appSrc(fs, express, crypto, http, zombie) {
+export default function appSrc(fs, express, MongoClient, crypto, http, zombie) {
     const app = express();
 
     app
@@ -44,6 +44,29 @@ export default function appSrc(fs, express, crypto, http, zombie) {
               console.error(`Ошибка: ${e.message}`);
           });
         })
+
+        .post('/insert', async (req, res, next) => {
+          const body = req.body;
+          const url = body.URL.replace(' ', '+');
+          const mongoClient = new MongoClient(url);
+
+          try {
+              await mongoClient.connect();
+              const db = mongoClient.db();
+              const collection = db.collection('users');
+              await collection.insertOne({
+                  login: body.login,
+                  password: body.password,
+              });
+              res.status(201);
+          } catch (err) {
+              res.status(400);
+              console.log(err);
+          } finally {
+              await mongoClient.close();
+          }
+          next();
+      })
 
         .use('/test/', async(req, res) => {
             const page = new zombie();
