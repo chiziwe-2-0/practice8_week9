@@ -23,9 +23,9 @@ export default function appSrc(fs, express, crypto, http, zombie) {
         })
 
         .all('/req', (req, res) => {
-          res.setHeader('content-type', 'text/plain');
+          res.setHeader('Content-type', 'text/plain');
 
-          let addr = req.body.addr;
+          let { addr } = req.query;
 
           http.get(addr, (response) => {
               response.setEncoding('utf8');
@@ -37,10 +37,12 @@ export default function appSrc(fs, express, crypto, http, zombie) {
                       console.log(parsedData);
                       res.send(JSON.stringify(parsedData));
                   } catch (e) {
-                      res.send('Данных нет!')
+                      console.error(e.message);
                   }
               });
-          })
+          }).on('error', (e) => {
+              console.error(`Ошибка: ${e.message}`);
+          });
         })
 
         .use('/test/', async(req, res) => {
