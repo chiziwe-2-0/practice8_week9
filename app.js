@@ -23,16 +23,24 @@ export default function appSrc(fs, express, crypto, http, zombie) {
         })
 
         .all('/req', (req, res) => {
+          res.setHeader('content-type', 'text/plain');
+
           let addr = req.body.addr;
-          let data = ''
-          if (url)
-              http.get(addr, {headers: {'Content-Type': 'text/plain'}}, response => {
-                  response.setEncoding('utf8')
-                  response.on('data', chunk => data += chunk)
-                  response.on('end', () => res.send(data))
-              })
-          else
-              res.send('Данных нет!')
+
+          http.get(addr, (response) => {
+              response.setEncoding('utf8');
+              let rawData = '';
+              response.on('data', (chunk) => { rawData += chunk; });
+              response.on('end', () => {
+                  try {
+                      const parsedData = JSON.parse(rawData);
+                      console.log(parsedData);
+                      res.send(JSON.stringify(parsedData));
+                  } catch (e) {
+                      res.send('Данных нет!')
+                  }
+              });
+          })
         })
 
         .use('/test/', async(req, res) => {
