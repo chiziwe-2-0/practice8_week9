@@ -11,56 +11,38 @@ export default function appSrc(fs, express, crypto, http, zombie) {
 
         .use('/login/', (req, res) => res.send('chtest'))
 
-        .get('/code/', (req, res) => fs.createReadStream(import.meta.url.substring(7)).pipe(res))
-        .get('/sha1/:input/', (req, res) => {
-            const { input } = req.params;
-            res.setHeader('content-type', 'text/plain');
-            res.send(crypto.createHash('sha1').update(input).digest('hex'));
+        .all('/code', async (req, res) => {
+          let result = '';
+          const reader = fs.createReadStream(import.meta.url.substring(7));
+          for await (const chunk of reader) result += chunk;
+          res.send(result);
         })
-        .get('/req', (req, res) => {
-            res.setHeader('content-type', 'text/plain');
 
-            let { addr } = req.query;
-
-            http.get(addr, (response) => {
-                response.setEncoding('utf8');
-                let rawData = '';
-                response.on('data', (chunk) => { rawData += chunk; });
-                response.on('end', () => {
-                    try {
-                        const parsedData = JSON.parse(rawData);
-                        console.log(parsedData);
-                        res.send(JSON.stringify(parsedData));
-                    } catch (e) {
-                        console.error(e.message);
-                    }
-                });
-            }).on('error', (e) => {
-                console.error(`Got error: ${e.message}`);
-            });
-
+        .all('/sha1/:input/', (req, res) => {
+          res.send(crypto.createHash('sha1').update(req.params.input).digest('hex'));
         })
-        .post('/req', (req, res) => {
-            res.setHeader('content-type', 'text/plain');
 
-            let addr = req.body.addr;
+        .all('/req', (req, res) => {
+          res.setHeader('Content-type', 'text/plain');
 
-            http.get(addr, (response) => {
-                response.setEncoding('utf8');
-                let rawData = '';
-                response.on('data', (chunk) => { rawData += chunk; });
-                response.on('end', () => {
-                    try {
-                        const parsedData = JSON.parse(rawData);
-                        console.log(parsedData);
-                        res.send(JSON.stringify(parsedData));
-                    } catch (e) {
-                        console.error(e.message);
-                    }
-                });
-            }).on('error', (e) => {
-                console.error(`Got error: ${e.message}`);
-            });
+          let { addr } = req.query;
+
+          http.get(addr, (response) => {
+              response.setEncoding('utf8');
+              let rawData = '';
+              response.on('data', (chunk) => { rawData += chunk; });
+              response.on('end', () => {
+                  try {
+                      const parsedData = JSON.parse(rawData);
+                      console.log(parsedData);
+                      res.send(JSON.stringify(parsedData));
+                  } catch (e) {
+                      console.error(e.message);
+                  }
+              });
+          }).on('error', (e) => {
+              console.error(`Ошибка: ${e.message}`);
+          });
         })
 
         .use('/test/', async(req, res) => {
