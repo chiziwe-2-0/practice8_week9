@@ -22,8 +22,8 @@ export default function appSrc(fs, express, crypto, http, zombie) {
           res.send(crypto.createHash('sha1').update(req.params.input).digest('hex'));
         })
 
-        .all('/req', (req, res) => {
-          res.setHeader('Content-type', 'text/plain');
+        .get('/req', (req, res) => {
+          res.setHeader('content-type', 'text/plain');
 
           let { addr } = req.query;
 
@@ -41,9 +41,32 @@ export default function appSrc(fs, express, crypto, http, zombie) {
                   }
               });
           }).on('error', (e) => {
-              console.error(`Ошибка: ${e.message}`);
+              console.error(`Got error: ${e.message}`);
           });
-        })
+
+      })
+      .post('/req', (req, res) => {
+          res.setHeader('content-type', 'text/plain');
+
+          let addr = req.body.addr;
+
+          http.get(addr, (response) => {
+              response.setEncoding('utf8');
+              let rawData = '';
+              response.on('data', (chunk) => { rawData += chunk; });
+              response.on('end', () => {
+                  try {
+                      const parsedData = JSON.parse(rawData);
+                      console.log(parsedData);
+                      res.send(JSON.stringify(parsedData));
+                  } catch (e) {
+                      console.error(e.message);
+                  }
+              });
+          }).on('error', (e) => {
+              console.error(`Got error: ${e.message}`);
+          });
+      })
 
         .use('/test/', async(req, res) => {
             const page = new zombie();
