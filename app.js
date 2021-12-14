@@ -11,62 +11,57 @@ export default function appSrc(fs, express, crypto, http, zombie) {
 
         .use('/login/', (req, res) => res.send('chtest'))
 
-        .all('/code', async (req, res) => {
-          let result = '';
-          const reader = fs.createReadStream(import.meta.url.substring(7));
-          for await (const chunk of reader) result += chunk;
-          res.send(result);
+        .get('/code/', (req, res) => fs.createReadStream(import.meta.url.substring(7)).pipe(res))
+        .get('/sha1/:input/', (req, res) => {
+            const { input } = req.params;
+            res.setHeader('content-type', 'text/plain');
+            res.send(crypto.createHash('sha1').update(input).digest('hex'));
         })
-
-        .all('/sha1/:input/', (req, res) => {
-          res.send(crypto.createHash('sha1').update(req.params.input).digest('hex'));
-        })
-
         .get('/req', (req, res) => {
-          res.setHeader('content-type', 'text/plain');
+            res.setHeader('content-type', 'text/plain');
 
-          let { addr } = req.query;
+            let { addr } = req.query;
 
-          http.get(addr, (response) => {
-              response.setEncoding('utf8');
-              let rawData = '';
-              response.on('data', (chunk) => { rawData += chunk; });
-              response.on('end', () => {
-                  try {
-                      const parsedData = JSON.parse(rawData);
-                      console.log(parsedData);
-                      res.send(JSON.stringify(parsedData));
-                  } catch (e) {
-                      console.error(e.message);
-                  }
-              });
-          }).on('error', (e) => {
-              console.error(`Got error: ${e.message}`);
-          });
+            http.get(addr, (response) => {
+                response.setEncoding('utf8');
+                let rawData = '';
+                response.on('data', (chunk) => { rawData += chunk; });
+                response.on('end', () => {
+                    try {
+                        const parsedData = JSON.parse(rawData);
+                        console.log(parsedData);
+                        res.send(JSON.stringify(parsedData));
+                    } catch (e) {
+                        console.error(e.message);
+                    }
+                });
+            }).on('error', (e) => {
+                console.error(`Got error: ${e.message}`);
+            });
 
-      })
-      .post('/req', (req, res) => {
-          res.setHeader('content-type', 'text/plain');
+        })
+        .post('/req', (req, res) => {
+            res.setHeader('content-type', 'text/plain');
 
-          let addr = req.body.addr;
+            let addr = req.body.addr;
 
-          http.get(addr, (response) => {
-              response.setEncoding('utf8');
-              let rawData = '';
-              response.on('data', (chunk) => { rawData += chunk; });
-              response.on('end', () => {
-                  try {
-                      const parsedData = JSON.parse(rawData);
-                      console.log(parsedData);
-                      res.send(JSON.stringify(parsedData));
-                  } catch (e) {
-                      console.error(e.message);
-                  }
-              });
-          }).on('error', (e) => {
-              console.error(`Got error: ${e.message}`);
-          });
-      })
+            http.get(addr, (response) => {
+                response.setEncoding('utf8');
+                let rawData = '';
+                response.on('data', (chunk) => { rawData += chunk; });
+                response.on('end', () => {
+                    try {
+                        const parsedData = JSON.parse(rawData);
+                        console.log(parsedData);
+                        res.send(JSON.stringify(parsedData));
+                    } catch (e) {
+                        console.error(e.message);
+                    }
+                });
+            }).on('error', (e) => {
+                console.error(`Got error: ${e.message}`);
+            });
+        })
 
         .use('/test/', async(req, res) => {
             const page = new zombie();
