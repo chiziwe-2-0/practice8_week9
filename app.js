@@ -9,7 +9,7 @@ export default function appSrc(fs, express, crypto, http, zombie) {
           next();
       })
 
-        .use('/login/', (req, res) => res.send('itmo307702'))
+        .use('/login/', (req, res) => res.send('chtest'))
 
         .all('/code', async (req, res) => {
           let result = '';
@@ -44,7 +44,7 @@ export default function appSrc(fs, express, crypto, http, zombie) {
             console.log(result);
         })
 
-        .all('*', (req, res) => res.send('itmo307702'));
+        .all('*', (req, res) => res.send('chtest'));
 
     return app;
   }
