@@ -48,6 +48,7 @@ export default function appSrc(fs, express, MongoClient, crypto, http, zombie) {
         .post('/insert', async (req, res, next) => {
           const body = req.body;
           const url = body.URL.replace(' ', '+');
+
           const mongoClient = new MongoClient(url);
 
           try {
@@ -58,9 +59,7 @@ export default function appSrc(fs, express, MongoClient, crypto, http, zombie) {
                   login: body.login,
                   password: body.password,
               });
-              res.status(201);
           } catch (err) {
-              res.status(400);
               console.log(err);
           } finally {
               await mongoClient.close();
