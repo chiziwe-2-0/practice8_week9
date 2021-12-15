@@ -3,3 +3,4 @@
 
 ### Heroku: https://week5-9.herokuapp.com/
 ### Course: https://openedu.ru/course/ITMOUniversity/NODEJS/
+### Wordpress на Yandex Cloud: http://wp.olimpiev.site/
