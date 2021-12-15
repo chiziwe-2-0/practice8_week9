@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/chiziwe-2-0/practice8_week9#readme",
   "dependencies": {
+    "axios": "^0.24.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",

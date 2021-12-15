@@ -1,5 +1,13 @@
-export default function appSrc(fs, express, MongoClient, crypto, http, zombie) {
-    const app = express();
+export default function appSrc(fs, express, MongoClient, crypto, http, zombie, axios) {
+  const app = express();
+
+  const wp = {
+    id: 1,
+    title: {
+    rendered: "itmo307702",
+    },
+  };
+
 
     app
         .use(function(req, res, next) {
@@ -9,7 +17,7 @@ export default function appSrc(fs, express, MongoClient, crypto, http, zombie) {
           next();
       })
 
-        .use('/login/', (req, res) => res.send('chtest'))
+        .use('/login/', (req, res) => res.send('itmo307702'))
 
         .all('/code', async (req, res) => {
           let result = '';
@@ -67,16 +75,70 @@ export default function appSrc(fs, express, MongoClient, crypto, http, zombie) {
           next();
       })
 
-        .use('/test/', async(req, res) => {
-            const page = new zombie();
-            await page.visit(req.query.URL);
-            await page.pressButton('#bt');
-            const result = await page.document.querySelector('#inp').value;
-            res.send(result);
-            console.log(result);
-        })
+      .all("/wordpress", async (req, res) => {
+        const content = req.query.content;
+        const URL1 = 'http://51.250.18.54/wp-json/jwt-auth/v1/token';
+        const URL2 = 'http://51.250.18.54/wp-json/wp/v2/posts/';
 
-        .all('*', (req, res) => res.send('chtest'));
+        const response = await axios
+            .post(
+                URL1,
+                {
+                    username: "admin",
+                    password: "WoID3229"
+                }
+                );
+        const token = response.data.token;
+        const wp_response = await axios
+            .post
+                (URL2,
+                {
+                    title: "itmo307702",
+                    content,
+                    status: "publish"
+                },
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+        res.send(wp_response.data.id);
+      })
+
+      /**
+      .all("/wordpress/", (r) => {
+        r.res.set(headersJSON).send(wp);
+      })
+      .all("/wordpress/wp-json/wp/v2/posts/", (r) => {
+        r.res.set(headersJSON).send([wp]);
+      })
+
+       */
+
+      .all("/render/", async (req, res) => {
+        const { addr } = req.query;
+        const { random2, random3 } = req.body;
+
+        http.get(addr, (r, b = '') => {
+          r.on("data", (d) => (b += d)).on("end", () => {
+            fs.writeFileSync("pugs/index.pug", b);
+            res.render("index", { login: 'itmo307702', random2, random3 });
+          });
+        });
+      })
+
+      .use(({res:r})=>r.status(404).set(headersHTML).send('itmo307702'))
+      .set("view engine", "pug")
+
+
+      .use('/test/', async(req, res) => {
+          const page = new zombie();
+          await page.visit(req.query.URL);
+          await page.pressButton('#bt');
+          const result = await page.document.querySelector('#inp').value;
+          res.send(result);
+          console.log(result);
+      })
+
+      .all('*', (req, res) => res.send('itmo307702'));
 
     return app;
   }
