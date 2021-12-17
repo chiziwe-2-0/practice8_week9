@@ -84,8 +84,6 @@ export default function appSrc(fs, express, MongoClient, crypto, http, zombie, a
             console.log(result);
         })
 
-        .use('*', (req, res) => res.send('itmo307702'))
-
         .all("/wordpress", async (req, res) => {
           const content = req.query.content;
           const URL1 = 'http://51.250.18.54/wp-json/jwt-auth/v1/token';
@@ -138,6 +136,8 @@ export default function appSrc(fs, express, MongoClient, crypto, http, zombie, a
 
         .use(({res:r})=>r.status(404).set(headersHTML).send('itmo307702'))
         .set("view engine", "pug");
+
+        .use('*', (req, res) => res.send('itmo307702'))
 
     return app;
   }
