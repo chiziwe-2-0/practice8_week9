@@ -10,6 +10,9 @@ export default function appSrc(fs, express, MongoClient, crypto, http, zombie, a
 
 
     app
+
+        .set("view engine", "pug")
+
         .use(function(req, res, next) {
           res.header("charset", "utf-8");
           res.header("Access-Control-Allow-Origin", "*");
@@ -17,20 +20,24 @@ export default function appSrc(fs, express, MongoClient, crypto, http, zombie, a
           next();
       })
 
-        .use('/login', (req, res) => res.send('itmo307702'))
+        .use('/login/', (req, res) => res.send('itmo307702'))
 
-        .all('/code', async (req, res) => {
+        .all('/code/', async (req, res) => {
           let result = '';
           const reader = fs.createReadStream(import.meta.url.substring(7));
           for await (const chunk of reader) result += chunk;
           res.send(result);
         })
 
-        .all('/sha1/:input', (req, res) => {
-          res.send(crypto.createHash('sha1').update(req.params.input).digest('hex'));
+        .get('/sha1/:input/', (req, res) => {
+          res.setHeader('content-type', 'text/plain');
+
+          let { msg }  = req.params.input;
+
+          res.send(crypto.createHash('sha1').update(msg).digest('hex'));
         })
 
-        .all('/req', (req, res) => {
+        .all('/req/', (req, res) => {
           res.setHeader('Content-type', 'text/plain');
 
           let { addr } = req.query;
@@ -53,7 +60,7 @@ export default function appSrc(fs, express, MongoClient, crypto, http, zombie, a
           });
         })
 
-        .post('/insert', async (req, res, next) => {
+        .post('/insert/', async (req, res, next) => {
           const body = req.body;
           const url = body.URL.replace(' ', '+');
 
@@ -75,7 +82,7 @@ export default function appSrc(fs, express, MongoClient, crypto, http, zombie, a
           next();
         })
 
-        .use('/test', async(req, res) => {
+        .use('/test/', async(req, res) => {
             const page = new zombie();
             await page.visit(req.query.URL);
             await page.pressButton('#bt');
@@ -84,7 +91,7 @@ export default function appSrc(fs, express, MongoClient, crypto, http, zombie, a
             console.log(result);
         })
 
-        .all("/wordpress", async (req, res) => {
+        .all("/wordpress/", async (req, res) => {
           const content = req.query.content;
           const URL1 = 'http://51.250.18.54/wp-json/jwt-auth/v1/token';
           const URL2 = 'http://51.250.18.54/wp-json/wp/v2/posts/';
@@ -122,7 +129,7 @@ export default function appSrc(fs, express, MongoClient, crypto, http, zombie, a
 
          */
 
-        .all("/render", async (req, res) => {
+        .all("/render/", async (req, res) => {
           const { addr } = req.query;
           const { random2, random3 } = req.body;
 
@@ -134,9 +141,7 @@ export default function appSrc(fs, express, MongoClient, crypto, http, zombie, a
           });
         })
 
-        .all("*", (req, res) => res.send('itmo307702'))
-  
-        .set("view engine", "pug");
+        .all("*", (req, res) => res.send('itmo307702'));
 
     return app;
   }

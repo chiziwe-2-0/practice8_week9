@@ -1,7 +1,7 @@
 {
-  "name": "practice8_week9",
+  "name": "week5-9",
   "version": "1.0.0",
-  "description": "Практическое задание 8 курса на OpenEdu",
+  "description": "Практическое задание на OpenEdu",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -20,14 +20,12 @@
   "homepage": "https://github.com/chiziwe-2-0/practice8_week9#readme",
   "dependencies": {
     "axios": "^0.24.0",
-    "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
-    "crypty": "^0.1.0",
     "express": "^4.17.1",
     "http": "^0.0.1-security",
     "mongodb": "^4.2.2",
-    "mongoose": "^6.1.1",
+    "fs": "^0.0.1-security",
     "zombie": "^6.1.4"
   },
   "devDependencies": {
