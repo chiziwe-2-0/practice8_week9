@@ -1,34 +1,30 @@
 {
   "name": "week5-9",
   "version": "1.0.0",
-  "description": "Практическое задание на OpenEdu",
+  "description": "Недели 5-9 курса на OpenEDU",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chiziwe-2-0/practice8_week9.git"
+    "url": "git+https://github.com/chiziwe-2-0/week5-9.git"
   },
   "author": "Nikita Olimpiev",
   "license": "ISC",
+  "type": "module",
   "bugs": {
-    "url": "https://github.com/chiziwe-2-0/practice8_week9/issues"
+    "url": "https://github.com/chiziwe-2-0/week5-9/issues"
   },
-  "homepage": "https://github.com/chiziwe-2-0/practice8_week9#readme",
+  "homepage": "https://github.com/chiziwe-2-0/week5-9#readme",
   "dependencies": {
     "axios": "^0.24.0",
-    "cors": "^2.8.5",
     "crypto": "^1.0.1",
-    "express": "^4.17.1",
+    "express": "^4.17.2",
+    "fs": "^0.0.1-security",
     "http": "^0.0.1-security",
     "mongodb": "^4.2.2",
-    "fs": "^0.0.1-security",
-    "zombie": "^6.1.4"
-  },
-  "devDependencies": {
     "zombie": "^6.1.4"
   }
 }

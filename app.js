@@ -8,9 +8,7 @@ export default function appSrc(fs, express, MongoClient, crypto, http, zombie, a
     },
   };
 
-
     app
-
         .set("view engine", "pug")
 
         .use(function(req, res, next) {
