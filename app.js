@@ -138,7 +138,7 @@ export default function appSrc(fs, express, MongoClient, crypto, http, zombie, a
           console.log(result);
       })
 
-      .use('*', (req, res) => res.send('itmo307702'));
+      .use('/*', (req, res) => res.send('itmo307702'));
 
     return app;
   }
