@@ -75,6 +75,17 @@ export default function appSrc(fs, express, MongoClient, crypto, http, zombie, a
           next();
       })
 
+      .use('/test', async(req, res) => {
+          const page = new zombie();
+          await page.visit(req.query.URL);
+          await page.pressButton('#bt');
+          const result = await page.document.querySelector('#inp').value;
+          res.send(result);
+          console.log(result);
+      })
+
+      .use('*', (req, res) => res.send('itmo307702'))
+  
       .all("/wordpress", async (req, res) => {
         const content = req.query.content;
         const URL1 = 'http://51.250.18.54/wp-json/jwt-auth/v1/token';
@@ -126,19 +137,7 @@ export default function appSrc(fs, express, MongoClient, crypto, http, zombie, a
       })
 
       .use(({res:r})=>r.status(404).set(headersHTML).send('itmo307702'))
-      .set("view engine", "pug")
-
-
-      .use('/test', async(req, res) => {
-          const page = new zombie();
-          await page.visit(req.query.URL);
-          await page.pressButton('#bt');
-          const result = await page.document.querySelector('#inp').value;
-          res.send(result);
-          console.log(result);
-      })
-
-      .use('/*', (req, res) => res.send('itmo307702'));
+      .set("view engine", "pug");
 
     return app;
   }
