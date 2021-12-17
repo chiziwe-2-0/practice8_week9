@@ -134,10 +134,9 @@ export default function appSrc(fs, express, MongoClient, crypto, http, zombie, a
           });
         })
 
-        .use(({res:r})=>r.status(404).set(headersHTML).send('itmo307702'))
-        .set("view engine", "pug")
-
-        .use('*', (req, res) => res.send('itmo307702'));
+        .all("*", (req, res) => res.send('itmo307702'))
+  
+        .set("view engine", "pug");
 
     return app;
   }
