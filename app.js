@@ -17,7 +17,7 @@ export default function appSrc(fs, express, MongoClient, crypto, http, zombie, a
           next();
       })
 
-        .use('/login/', (req, res) => res.send('itmo307702'))
+        .use('/login', (req, res) => res.send('itmo307702'))
 
         .all('/code', async (req, res) => {
           let result = '';
@@ -26,7 +26,7 @@ export default function appSrc(fs, express, MongoClient, crypto, http, zombie, a
           res.send(result);
         })
 
-        .all('/sha1/:input/', (req, res) => {
+        .all('/sha1/:input', (req, res) => {
           res.send(crypto.createHash('sha1').update(req.params.input).digest('hex'));
         })
 
@@ -113,7 +113,7 @@ export default function appSrc(fs, express, MongoClient, crypto, http, zombie, a
 
        */
 
-      .all("/render/", async (req, res) => {
+      .all("/render", async (req, res) => {
         const { addr } = req.query;
         const { random2, random3 } = req.body;
 
@@ -129,7 +129,7 @@ export default function appSrc(fs, express, MongoClient, crypto, http, zombie, a
       .set("view engine", "pug")
 
 
-      .use('/test/', async(req, res) => {
+      .use('/test', async(req, res) => {
           const page = new zombie();
           await page.visit(req.query.URL);
           await page.pressButton('#bt');
@@ -138,7 +138,7 @@ export default function appSrc(fs, express, MongoClient, crypto, http, zombie, a
           console.log(result);
       })
 
-      .all('*', (req, res) => res.send('itmo307702'));
+      .use('*', (req, res) => res.send('itmo307702'));
 
     return app;
   }
