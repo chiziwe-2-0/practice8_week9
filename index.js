@@ -8,7 +8,7 @@ import axios from 'axios';
 
 import appSrc from './app.js';
 
-const app = appSrc(fs, express, crypto, http, zombie, MongoClient, axios);
+const app = appSrc(fs, express, MongoClient, crypto, http, zombie, axios);
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {

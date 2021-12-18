@@ -30,7 +30,7 @@ export default function appSrc(fs, express, MongoClient, crypto, http, zombie, a
         .get('/sha1/:input/', (req, res) => {
           res.setHeader('content-type', 'text/plain');
 
-          let { msg }  = req.params.input;
+          let msg  = req.params.input;
 
           res.send(crypto.createHash('sha1').update(msg).digest('hex'));
         })
